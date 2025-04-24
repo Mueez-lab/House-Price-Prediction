@@ -13,12 +13,20 @@ df.dropna(inplace=True) # removes any rows in your DataFrame df that contain mis
 x = df.drop(['median_house_value'], axis=1) # 1 tells pandas to drop a column and 0 tells it to drop a row.
 y = df['median_house_value']
 
+# Split the data into training and testing sets (80/20 split)
 x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2)
+
+# ---------------------------------------------- Train Data ---------------------------------------------------------------------------------------
+# Split the data into training and testing sets (80/20 split)
 train_data = x_train.join(y_train)
+
+# Plot histograms for all features to understand their distribution
 train_data.hist(bins=30, figsize=(15, 10), edgecolor='black')
 plt.suptitle("Histograms of Train Data Features", fontsize=16)
 plt.tight_layout()
 plt.show()
+
+# Plot the correlation matrix to find relationships between features
 plt.figure(figsize=(8, 4))
 sns.heatmap(train_data.corr(numeric_only=True), annot=True, cmap='YlGnBu')
 plt.title("Correlation Matrix")
@@ -41,12 +49,14 @@ train_data['households'] = np.log(train_data['households'] + 1)
 train_data['bedroom_ratio'] = train_data['total_bedrooms']/ train_data['total_rooms']
 train_data['houshold_rooms'] = train_data['total_rooms']/ train_data['households']
 
-
+# Split features and target again after transformations
 x_train , y_train = train_data.drop(['median_house_value'], axis=1), train_data['median_house_value']
+
+# Standardize features using StandardScaler
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 
-# Test data
+#------------------------------------------------------- Test data ------------------------------------------------------------------
 test_data = x_test.join(y_test)
 test_data = test_data.join(pd.get_dummies(test_data['ocean_proximity']).astype(int))
 test_data = test_data.drop(['ocean_proximity'], axis=1)
@@ -69,7 +79,7 @@ print(f"R² on training data with Linear Regression : {r2:.2f}")
 r2 = model.score(x_test, y_test)
 print(f"R2 on testing data with Linear Regression : {r2:.2f}")
 
-
+#----------------------------------------------- Models ---------------------------------------------------------------------------------
 # Model Random Forest Regressor
 forest = RandomForestRegressor()
 forest.fit(x_train,y_train)
