@@ -90,9 +90,8 @@ Linear Regression	~0.65
 Random Forest	~0.80+ (after tuning)
 📂 How to Run
 
-    Clone this repository:
-
-git clone https://github.com/Mueez-lab/house-price-prediction.git
+    Clone this repository: git clone https://github.com/Mueez-lab/house-price-prediction.git
+    
 cd house-price-prediction
 
 Install dependencies:
